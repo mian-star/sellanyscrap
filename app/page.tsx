@@ -1,17 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Camera, Package, UserCheck, Banknote, CreditCard, Clock, Shield, Wallet, Star, Play, Phone } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Camera,
+  Package,
+  UserCheck,
+  Banknote,
+  CreditCard,
+  Clock,
+  Shield,
+  Wallet,
+  Star,
+  Play,
+  Phone,
+} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
-
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ScrapType {
   title: string;
@@ -21,42 +45,42 @@ interface ScrapType {
 
 const scrapTypes: ScrapType[] = [
   {
-    title: 'Cardboard',
-    image: '/cardbord.jpg',
-    priceRange: 'Rs26-33/kg'
+    title: "Cardboard",
+    image: "/cardbord.jpg",
+    priceRange: "Rs26-33/kg",
   },
   {
-    title: 'Iron',
-    image: '/ironnn.jpg',
-    priceRange: 'Rs120-200/kg'
+    title: "Iron",
+    image: "/ironnn.jpg",
+    priceRange: "Rs120-200/kg",
   },
   {
-    title: 'Plastic',
-    image: '/plastic.jpg',
-    priceRange: 'Rs20-25/kg'
+    title: "Plastic",
+    image: "/plastic.jpg",
+    priceRange: "Rs20-25/kg",
   },
   {
-    title: 'Paper',
-    image: '/paper.jpg',
-    priceRange: 'Rs11-20/kg'
+    title: "Paper",
+    image: "/paper.jpg",
+    priceRange: "Rs11-20/kg",
   },
   {
-    title: 'Copper',
-    image: '/copper.jpg',
-    priceRange: 'Rs2200-2500/kg'
+    title: "Copper",
+    image: "/copper.jpg",
+    priceRange: "Rs2200-2500/kg",
   },
   {
-    title: 'Silver',
-    image: '/silver.jpg',
-    priceRange: 'Rs400-500/kg'
+    title: "Silver",
+    image: "/silver.jpg",
+    priceRange: "Rs400-500/kg",
   },
 ];
 
 const steps = [
-  { title: 'Personal Details', icon: 'user' },
-  { title: 'Scrap Details', icon: 'box' },
-  { title: 'Upload Images', icon: 'camera' },
-  { title: 'Location & Confirmation', icon: 'map' },
+  { title: "Personal Details", icon: "user" },
+  { title: "Scrap Details", icon: "box" },
+  { title: "Upload Images", icon: "camera" },
+  { title: "Location & Confirmation", icon: "map" },
 ];
 
 interface FormData {
@@ -75,79 +99,87 @@ const processSteps = [
   {
     icon: Package,
     title: "Post Your Scrap",
-    description: "Share details and photos of your scrap materials through our easy-to-use platform"
+    description:
+      "Share details and photos of your scrap materials through our easy-to-use platform",
   },
   {
     icon: UserCheck,
     title: "Doorstep Pickup",
-    description: "Our professional team arrives at your location at the scheduled time"
+    description:
+      "Our professional team arrives at your location at the scheduled time",
   },
   {
     icon: Banknote,
     title: "Instant Payment",
-    description: "Receive immediate payment through your preferred payment method"
-  }
+    description:
+      "Receive immediate payment through your preferred payment method",
+  },
 ];
 
 const paymentFeatures = [
   {
     icon: CreditCard,
     title: "Multiple Payment Options",
-    description: "Choose from UPI, bank transfer, or cash payment methods"
+    description: "Choose from UPI, bank transfer, or cash payment methods",
   },
   {
     icon: Clock,
     title: "Instant Transfer",
-    description: "Get your payment immediately after scrap verification"
+    description: "Get your payment immediately after scrap verification",
   },
   {
     icon: Shield,
     title: "Secure Transactions",
-    description: "100% safe and transparent payment process"
+    description: "100% safe and transparent payment process",
   },
   {
     icon: Wallet,
     title: "Best Market Rates",
-    description: "Competitive prices updated daily based on market trends"
-  }
+    description: "Competitive prices updated daily based on market trends",
+  },
 ];
 
 const testimonials = [
   {
     name: "Rajesh Kumar",
     title: "Business Owner",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
     rating: 5,
-    text: "SellAnyScrap made the process incredibly simple. Their team was professional, and the payment was instant!"
+    text: "SellAnyScrap made the process incredibly simple. Their team was professional, and the payment was instant!",
   },
   {
     name: "Priya Sharma",
     title: "Homeowner",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200",
     rating: 5,
-    text: "I was amazed by how quickly they responded and picked up the scrap. Best rates in the market!"
+    text: "I was amazed by how quickly they responded and picked up the scrap. Best rates in the market!",
   },
   {
     name: "Amit Patel",
     title: "Factory Manager",
-    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200",
+    avatar:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200",
     rating: 5,
-    text: "Regular scrap collection service that's reliable and professional. Highly recommended!"
+    text: "Regular scrap collection service that's reliable and professional. Highly recommended!",
   },
   {
     name: "Sneha Reddy",
     title: "Restaurant Owner",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
     rating: 5,
-    text: "The team is always punctual and offers great rates. Best scrap service I've used!"
+    text: "The team is always punctual and offers great rates. Best scrap service I've used!",
   },
   {
     name: "Vikram Singh",
     title: "Warehouse Supervisor",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
     rating: 5,
-    text: "Excellent service! They handle everything professionally and pay instantly."
-  }
+    text: "Excellent service! They handle everything professionally and pay instantly.",
+  },
 ];
 
 export default function Home() {
@@ -169,13 +201,11 @@ export default function Home() {
     acceptMarketPrice: false,
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const callData = ()=>{
-    router.push('/contact');
-    
-  }
-
+  const callData = () => {
+    router.push("/contact");
+  };
 
   const testimonialRef = useRef<HTMLDivElement | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -214,7 +244,6 @@ export default function Home() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -237,7 +266,7 @@ export default function Home() {
 
     try {
       // Upload to backend
-      const response = await fetch("http://localhost:3000/api/upload", {
+      const response = await fetch("https://sellanyscrap.vercel.app/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -262,16 +291,13 @@ export default function Home() {
     }));
   };
 
-
   const handleNext = () => {
-    if (currentStep < 4) setCurrentStep(prev => prev + 1);
+    if (currentStep < 4) setCurrentStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
-    if (currentStep > 1) setCurrentStep(prev => prev - 1);
+    if (currentStep > 1) setCurrentStep((prev) => prev - 1);
   };
-
- 
 
   const handleSubmit = async () => {
     const errors: { [key: string]: string } = {};
@@ -296,7 +322,7 @@ export default function Home() {
     setFormErrors({}); // clear errors if everything is fine
 
     try {
-      const response = await fetch("http://localhost:3000/api/form-data", {
+      const response = await fetch("https://sellanyscrap.vercel.app/api/form-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -327,374 +353,371 @@ export default function Home() {
     }
   };
 
- 
-
-
   const renderStepContent = () => {
-  //   switch (currentStep) {
-  //     case 1:
-  //       return (
-  //         <div className="space-y-4">
-  //           <div>
-  //             <Label htmlFor="fullName">Full Name *</Label>
-  //             <Input
-  //               id="fullName"
-  //               value={formData.fullName}
-  //               onChange={(e) => handleInputChange('fullName', e.target.value)}
-  //               placeholder="Enter your full name"
-  //               required
-  //             />
-  //           </div>
-  //           <div>
-  //             <Label htmlFor="phoneNumber">Phone Number *</Label>
-  //             <Input
-  //               id="phoneNumber"
-  //               type="tel"
-  //               value={formData.phoneNumber}
-  //               onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-  //               placeholder="Enter your phone number"
-  //               required
-  //               pattern="[0-9]{10}"
-  //             />
-  //           </div>
-  //         </div>
-  //       );
-  //     case 2:
-  //       return (
-  //         <div className="space-y-4">
-  //           <div>
-  //             <Label htmlFor="scrapType">Scrap Type *</Label>
-  //             <Select
-  //               value={formData.scrapType}
-  //               onValueChange={(value) => handleInputChange('scrapType', value)}
-  //             >
-  //               <SelectTrigger>
-  //                 <SelectValue placeholder="Select scrap type" />
-  //               </SelectTrigger>
-  //               <SelectContent>
-  //                 {scrapTypes.map((type) => (
-  //                   <SelectItem key={type.title} value={type.title.toLowerCase()}>
-  //                     {type.title}
-  //                   </SelectItem>
-  //                 ))}
-  //               </SelectContent>
-  //             </Select>
-  //           </div>
-  //           <div>
-  //             <Label htmlFor="weight">Weight (in KG) *</Label>
-  //             <Input
-  //               id="weight"
-  //               type="number"
-  //               value={formData.weight}
-  //               onChange={(e) => handleInputChange('weight', e.target.value)}
-  //               placeholder="Enter weight in KG"
-  //               min="1"
-  //               required
-  //             />
-  //           </div>
-  //           <div>
-  //             <Label htmlFor="expectedPrice">Expected Price per KG (Optional)</Label>
-  //             <Input
-  //               id="expectedPrice"
-  //               type="number"
-  //               value={formData.expectedPrice}
-  //               onChange={(e) => handleInputChange('expectedPrice', e.target.value)}
-  //               placeholder="Enter expected price"
-  //               min="0"
-  //             />
-  //           </div>
-  //           <div className="flex items-center space-x-2">
-  //             <Checkbox
-  //               id="acceptMarketPrice"
-  //               checked={formData.acceptMarketPrice}
-  //               onCheckedChange={(checked) => handleInputChange('acceptMarketPrice', checked)}
-  //             />
-  //             <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
-  //           </div>
-  //         </div>
-  //       );
-  //     case 3:
-  //       return (
-  //         <div className="space-y-4">
-  //           <Label>Upload Scrap Pictures * (Minimum 3 images required)</Label>
-  //           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-  //             <Input
-  //               type="file"
-  //               multiple
-  //               accept="image/*"
-  //               onChange={handleFileChange}
-  //               className="hidden"
-  //               id="imageUpload"
-  //               required
-  //               minLength={3}
-  //             />
-  //             <Label htmlFor="imageUpload" className="cursor-pointer">
-  //               <Camera className="mx-auto h-12 w-12 text-gray-400" />
-  //               <p className="mt-2 text-sm text-gray-500">Click to upload or drag and drop</p>
-  //               <p className="text-xs text-gray-500">PNG, JPG up to 10MB each (Min. 3 images)</p>
-  //             </Label>
-  //           </div>
-  //           {formData.images.length > 0 && (
-  //             <p className="text-sm text-gray-500">{formData.images.length} files selected</p>
-  //           )}
-  //         </div>
-  //       );
-  //     case 4:
-  //       return (
-  //         <div className="space-y-4">
-  //           <div>
-  //             <Label htmlFor="address">Pickup Address *</Label>
-  //             <Input
-  //               id="address"
-  //               value={formData.address}
-  //               onChange={(e) => handleInputChange('address', e.target.value)}
-  //               placeholder="Enter pickup address"
-  //               required
-  //             />
-  //           </div>
-  //           <div>
-  //             <Label htmlFor="pickupDate">Preferred Pickup Date *</Label>
-  //             <Input
-  //               id="pickupDate"
-  //               type="date"
-  //               value={formData.pickupDate}
-  //               onChange={(e) => handleInputChange('pickupDate', e.target.value)}
-  //               min={new Date().toISOString().split('T')[0]}
-  //               required
-  //             />
-  //           </div>
-  //         </div>
-  //       );
-  //     default:
-  //       return null;
-  //   }
-  // };
-  switch (currentStep) {
-    case 1:
-      return (
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="fullName">Full Name *</Label>
-            <Input
-              id="fullName"
-              value={formData.fullName}
-              onChange={(e) => handleInputChange("fullName", e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
-            {formErrors.fullName && (
-              <p className="text-red-500 text-sm mt-1">
-                {formErrors.fullName}
-              </p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="phoneNumber">Phone Number *</Label>
-            <Input
-              id="phoneNumber"
-              type="tel"
-              value={formData.phoneNumber}
-              onChange={(e) =>
-                handleInputChange("phoneNumber", e.target.value)
-              }
-              placeholder="Enter your phone number"
-              required
-              pattern="[0-9]{10}"
-            />
-            {formErrors.phoneNumber && (
-              <p className="text-red-500 text-sm mt-1">
-                {formErrors.phoneNumber}
-              </p>
-            )}
-          </div>
-        </div>
-      );
-    case 2:
-      return (
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="scrapType">Scrap Type *</Label>
-            <Select
-              value={formData.scrapType}
-              onValueChange={(value) => handleInputChange("scrapType", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select scrap type" />
-              </SelectTrigger>
-              <SelectContent>
-                {scrapTypes.map((type) => (
-                  <SelectItem
-                    key={type.title}
-                    value={type.title.toLowerCase()}
-                  >
-                    {type.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="weight">Weight (in KG) *</Label>
-            <Input
-              id="weight"
-              type="number"
-              value={formData.weight}
-              onChange={(e) => handleInputChange("weight", e.target.value)}
-              placeholder="Enter weight in KG"
-              min="1"
-              required
-            />
-            {formErrors.weight && (
-              <p className="text-red-500 text-sm mt-1">{formErrors.weight}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="expectedPrice">
-              Expected Price per KG (Optional)
-            </Label>
-            <Input
-              id="expectedPrice"
-              type="number"
-              value={formData.expectedPrice}
-              onChange={(e) =>
-                handleInputChange("expectedPrice", e.target.value)
-              }
-              placeholder="Enter expected price"
-              min="0"
-            />
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="acceptMarketPrice"
-              checked={formData.acceptMarketPrice}
-              onCheckedChange={(checked) =>
-                handleInputChange("acceptMarketPrice", checked)
-              }
-            />
-            <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
-          </div>
-        </div>
-      );
-    case 3:
-      return (
-        <div className="space-y-4">
-          <Label>Upload Scrap Pictures *</Label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <Input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-              id="imageUpload"
-            />
-            <Label htmlFor="imageUpload" className="cursor-pointer">
-              <Camera className="mx-auto h-12 w-12 text-gray-400" />
-              <p className="mt-2 text-sm text-gray-500">
-                Click to upload or drag and drop
-              </p>
-              <p className="text-xs text-gray-500">
-                PNG, JPG up to 10MB each
-              </p>
-            </Label>
-            {formErrors.images && (
-              <p className="text-red-500 text-sm mt-1">{formErrors.images}</p>
-            )}
-          </div>
-          {previewImages.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {previewImages.map((image, index) => (
-                <div key={index} className="relative border rounded-lg p-2">
-                  <img
-                    src={image}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-auto rounded-lg"
-                  />
-                </div>
-              ))}
+    //   switch (currentStep) {
+    //     case 1:
+    //       return (
+    //         <div className="space-y-4">
+    //           <div>
+    //             <Label htmlFor="fullName">Full Name *</Label>
+    //             <Input
+    //               id="fullName"
+    //               value={formData.fullName}
+    //               onChange={(e) => handleInputChange('fullName', e.target.value)}
+    //               placeholder="Enter your full name"
+    //               required
+    //             />
+    //           </div>
+    //           <div>
+    //             <Label htmlFor="phoneNumber">Phone Number *</Label>
+    //             <Input
+    //               id="phoneNumber"
+    //               type="tel"
+    //               value={formData.phoneNumber}
+    //               onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+    //               placeholder="Enter your phone number"
+    //               required
+    //               pattern="[0-9]{10}"
+    //             />
+    //           </div>
+    //         </div>
+    //       );
+    //     case 2:
+    //       return (
+    //         <div className="space-y-4">
+    //           <div>
+    //             <Label htmlFor="scrapType">Scrap Type *</Label>
+    //             <Select
+    //               value={formData.scrapType}
+    //               onValueChange={(value) => handleInputChange('scrapType', value)}
+    //             >
+    //               <SelectTrigger>
+    //                 <SelectValue placeholder="Select scrap type" />
+    //               </SelectTrigger>
+    //               <SelectContent>
+    //                 {scrapTypes.map((type) => (
+    //                   <SelectItem key={type.title} value={type.title.toLowerCase()}>
+    //                     {type.title}
+    //                   </SelectItem>
+    //                 ))}
+    //               </SelectContent>
+    //             </Select>
+    //           </div>
+    //           <div>
+    //             <Label htmlFor="weight">Weight (in KG) *</Label>
+    //             <Input
+    //               id="weight"
+    //               type="number"
+    //               value={formData.weight}
+    //               onChange={(e) => handleInputChange('weight', e.target.value)}
+    //               placeholder="Enter weight in KG"
+    //               min="1"
+    //               required
+    //             />
+    //           </div>
+    //           <div>
+    //             <Label htmlFor="expectedPrice">Expected Price per KG (Optional)</Label>
+    //             <Input
+    //               id="expectedPrice"
+    //               type="number"
+    //               value={formData.expectedPrice}
+    //               onChange={(e) => handleInputChange('expectedPrice', e.target.value)}
+    //               placeholder="Enter expected price"
+    //               min="0"
+    //             />
+    //           </div>
+    //           <div className="flex items-center space-x-2">
+    //             <Checkbox
+    //               id="acceptMarketPrice"
+    //               checked={formData.acceptMarketPrice}
+    //               onCheckedChange={(checked) => handleInputChange('acceptMarketPrice', checked)}
+    //             />
+    //             <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
+    //           </div>
+    //         </div>
+    //       );
+    //     case 3:
+    //       return (
+    //         <div className="space-y-4">
+    //           <Label>Upload Scrap Pictures * (Minimum 3 images required)</Label>
+    //           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+    //             <Input
+    //               type="file"
+    //               multiple
+    //               accept="image/*"
+    //               onChange={handleFileChange}
+    //               className="hidden"
+    //               id="imageUpload"
+    //               required
+    //               minLength={3}
+    //             />
+    //             <Label htmlFor="imageUpload" className="cursor-pointer">
+    //               <Camera className="mx-auto h-12 w-12 text-gray-400" />
+    //               <p className="mt-2 text-sm text-gray-500">Click to upload or drag and drop</p>
+    //               <p className="text-xs text-gray-500">PNG, JPG up to 10MB each (Min. 3 images)</p>
+    //             </Label>
+    //           </div>
+    //           {formData.images.length > 0 && (
+    //             <p className="text-sm text-gray-500">{formData.images.length} files selected</p>
+    //           )}
+    //         </div>
+    //       );
+    //     case 4:
+    //       return (
+    //         <div className="space-y-4">
+    //           <div>
+    //             <Label htmlFor="address">Pickup Address *</Label>
+    //             <Input
+    //               id="address"
+    //               value={formData.address}
+    //               onChange={(e) => handleInputChange('address', e.target.value)}
+    //               placeholder="Enter pickup address"
+    //               required
+    //             />
+    //           </div>
+    //           <div>
+    //             <Label htmlFor="pickupDate">Preferred Pickup Date *</Label>
+    //             <Input
+    //               id="pickupDate"
+    //               type="date"
+    //               value={formData.pickupDate}
+    //               onChange={(e) => handleInputChange('pickupDate', e.target.value)}
+    //               min={new Date().toISOString().split('T')[0]}
+    //               required
+    //             />
+    //           </div>
+    //         </div>
+    //       );
+    //     default:
+    //       return null;
+    //   }
+    // };
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="fullName">Full Name *</Label>
+              <Input
+                id="fullName"
+                value={formData.fullName}
+                onChange={(e) => handleInputChange("fullName", e.target.value)}
+                placeholder="Enter your full name"
+                required
+              />
+              {formErrors.fullName && (
+                <p className="text-red-500 text-sm mt-1">
+                  {formErrors.fullName}
+                </p>
+              )}
             </div>
-          )}
-          {formData.images.length > 0 && (
-            <div className="space-y-4">
-              <p className="text-sm text-gray-500">
-                {formData.images.length} files selected
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {formData.images.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {formData.images.map((image, index) => {
-                      // Ensure `image` is either a string (Cloudinary URL) or a File object
-                      const imageUrl =
-                        typeof image === "string"
-                          ? image
-                          : image instanceof File
-                          ? URL.createObjectURL(image)
-                          : "";
-
-                      return (
-                        <div
-                          key={index}
-                          className="relative border rounded-lg p-2"
-                        >
-                          {imageUrl && (
-                            <img
-                              src={imageUrl}
-                              alt={`Uploaded ${index + 1}`}
-                              className="w-full h-auto"
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
+            <div>
+              <Label htmlFor="phoneNumber">Phone Number *</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) =>
+                  handleInputChange("phoneNumber", e.target.value)
+                }
+                placeholder="Enter your phone number"
+                required
+                pattern="[0-9]{10}"
+              />
+              {formErrors.phoneNumber && (
+                <p className="text-red-500 text-sm mt-1">
+                  {formErrors.phoneNumber}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="scrapType">Scrap Type *</Label>
+              <Select
+                value={formData.scrapType}
+                onValueChange={(value) => handleInputChange("scrapType", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select scrap type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {scrapTypes.map((type) => (
+                    <SelectItem
+                      key={type.title}
+                      value={type.title.toLowerCase()}
+                    >
+                      {type.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="weight">Weight (in KG) *</Label>
+              <Input
+                id="weight"
+                type="number"
+                value={formData.weight}
+                onChange={(e) => handleInputChange("weight", e.target.value)}
+                placeholder="Enter weight in KG"
+                min="1"
+                required
+              />
+              {formErrors.weight && (
+                <p className="text-red-500 text-sm mt-1">{formErrors.weight}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="expectedPrice">
+                Expected Price per KG (Optional)
+              </Label>
+              <Input
+                id="expectedPrice"
+                type="number"
+                value={formData.expectedPrice}
+                onChange={(e) =>
+                  handleInputChange("expectedPrice", e.target.value)
+                }
+                placeholder="Enter expected price"
+                min="0"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="acceptMarketPrice"
+                checked={formData.acceptMarketPrice}
+                onCheckedChange={(checked) =>
+                  handleInputChange("acceptMarketPrice", checked)
+                }
+              />
+              <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
+            </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="space-y-4">
+            <Label>Upload Scrap Pictures *</Label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+              <Input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+                id="imageUpload"
+              />
+              <Label htmlFor="imageUpload" className="cursor-pointer">
+                <Camera className="mx-auto h-12 w-12 text-gray-400" />
+                <p className="mt-2 text-sm text-gray-500">
+                  Click to upload or drag and drop
+                </p>
+                <p className="text-xs text-gray-500">
+                  PNG, JPG up to 10MB each
+                </p>
+              </Label>
+              {formErrors.images && (
+                <p className="text-red-500 text-sm mt-1">{formErrors.images}</p>
+              )}
+            </div>
+            {previewImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {previewImages.map((image, index) => (
+                  <div key={index} className="relative border rounded-lg p-2">
+                    <img
+                      src={image}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-auto rounded-lg"
+                    />
                   </div>
-                )}
+                ))}
               </div>
+            )}
+            {formData.images.length > 0 && (
+              <div className="space-y-4">
+                <p className="text-sm text-gray-500">
+                  {formData.images.length} files selected
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {formData.images.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {formData.images.map((image, index) => {
+                        // Ensure `image` is either a string (Cloudinary URL) or a File object
+                        const imageUrl =
+                          typeof image === "string"
+                            ? image
+                            : image instanceof File
+                            ? URL.createObjectURL(image)
+                            : "";
+
+                        return (
+                          <div
+                            key={index}
+                            className="relative border rounded-lg p-2"
+                          >
+                            {imageUrl && (
+                              <img
+                                src={imageUrl}
+                                alt={`Uploaded ${index + 1}`}
+                                className="w-full h-auto"
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      case 4:
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="address">Pickup Address *</Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+                placeholder="Enter pickup address"
+                required
+              />
+              {formErrors.address && (
+                <p className="text-red-500 text-sm mt-1">
+                  {formErrors.address}
+                </p>
+              )}
             </div>
-          )}
-        </div>
-      );
-    case 4:
-      return (
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="address">Pickup Address *</Label>
-            <Input
-              id="address"
-              value={formData.address}
-              onChange={(e) => handleInputChange("address", e.target.value)}
-              placeholder="Enter pickup address"
-              required
-            />
-            {formErrors.address && (
-              <p className="text-red-500 text-sm mt-1">
-                {formErrors.address}
-              </p>
-            )}
+            <div>
+              <Label htmlFor="pickupDate">Preferred Pickup Date *</Label>
+              <Input
+                id="pickupDate"
+                type="date"
+                value={formData.pickupDate}
+                onChange={(e) =>
+                  handleInputChange("pickupDate", e.target.value)
+                }
+                min={new Date().toISOString().split("T")[0]}
+                required
+              />
+              {formErrors.pickupDate && (
+                <p className="text-red-500 text-sm mt-1">
+                  {formErrors.pickupDate}
+                </p>
+              )}
+            </div>
           </div>
-          <div>
-            <Label htmlFor="pickupDate">Preferred Pickup Date *</Label>
-            <Input
-              id="pickupDate"
-              type="date"
-              value={formData.pickupDate}
-              onChange={(e) =>
-                handleInputChange("pickupDate", e.target.value)
-              }
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
-            {formErrors.pickupDate && (
-              <p className="text-red-500 text-sm mt-1">
-                {formErrors.pickupDate}
-              </p>
-            )}
-          </div>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#14532D] to-[#0F3D24]">
@@ -708,23 +731,29 @@ export default function Home() {
           <div className="text-center">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
               Turn Your Scrap into Cash
-              <span className="block text-[#D4AF37]">Quick, Easy & Hassle-Free!</span>
+              <span className="block text-[#D4AF37]">
+                Quick, Easy & Hassle-Free!
+              </span>
             </h1>
             <p className="mt-3 max-w-md mx-auto text-lg text-gray-300 sm:text-xl md:mt-5 md:max-w-3xl">
-              Sell your scrap materials effortlessly and get the best rates instantly.
+              Sell your scrap materials effortlessly and get the best rates
+              instantly.
             </p>
           </div>
 
           {/* Scrap Types Grid */}
           <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {scrapTypes.map((scrap:any) => (
+            {scrapTypes.map((scrap: any) => (
               <div
                 key={scrap.title}
                 className="group relative overflow-hidden rounded-lg shadow-xl bg-white cursor-pointer"
                 onClick={() => {
                   setSelectedScrap(scrap);
                   setIsDialogOpen(true);
-                  setFormData(prev => ({ ...prev, scrapType: scrap.title.toLowerCase() }));
+                  setFormData((prev) => ({
+                    ...prev,
+                    scrapType: scrap.title.toLowerCase(),
+                  }));
                 }}
               >
                 <div className="relative h-48 w-full overflow-hidden">
@@ -737,11 +766,13 @@ export default function Home() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-900">{scrap.title}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{scrap.priceRange}</p>
-                  <Button
-                    className="w-full mt-3 bg-[#D4AF37] hover:bg-[#0D331E] text-white transition-colors duration-300"
-                  >
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {scrap.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {scrap.priceRange}
+                  </p>
+                  <Button className="w-full mt-3 bg-[#D4AF37] hover:bg-[#0D331E] text-white transition-colors duration-300">
                     Sell This
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -755,12 +786,14 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8">
                 <h2 className="text-3xl sm:text-4xl font-bold text-white">
-                  How We Handle Your <span className="text-[#D4AF37]">Scrap</span>
+                  How We Handle Your{" "}
+                  <span className="text-[#D4AF37]">Scrap</span>
                 </h2>
                 <p className="text-gray-300 text-lg">
-                  Experience a seamless and professional scrap collection service with our expert team.
+                  Experience a seamless and professional scrap collection
+                  service with our expert team.
                 </p>
-                
+
                 <div className="space-y-8">
                   {processSteps.map((step) => (
                     <div
@@ -771,7 +804,9 @@ export default function Home() {
                         <step.icon className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                        <h3 className="text-xl font-semibold text-white mb-2">
+                          {step.title}
+                        </h3>
                         <p className="text-gray-300">{step.description}</p>
                       </div>
                     </div>
@@ -794,10 +829,14 @@ export default function Home() {
           <div className="py-16 sm:py-24 bg-[#0A2518] rounded-3xl">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Get<br/><span className="text-[#D4AF37]">Instant Payment</span><br/> for Your Scrap
+                Get
+                <br />
+                <span className="text-[#D4AF37]">Instant Payment</span>
+                <br /> for Your Scrap
               </h2>
-              <p className="mt-3 max-w-md mx-auto text-lg text-gray-300 sm:text-xl md:mt-5 md:max-w-3xl">
-                We believe in providing immediate value for your materials. Our hassle-free payment process ensures you get paid as soon as we verify your scrap.
+              <p className="mt-3 max-w-md px-2 mx-auto text-lg text-gray-300 sm:text-xl md:mt-5 md:max-w-3xl">
+                We believe in providing immediate value for your materials. Our
+                hassle-free payment process ensures you get paid as soon as we verify your scrap.
               </p>
             </div>
 
@@ -810,7 +849,9 @@ export default function Home() {
                   <div className="w-12 h-12 rounded-full bg-[#D4AF37] flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    {feature.title}
+                  </h3>
                   <p className="text-gray-300">{feature.description}</p>
                 </div>
               ))}
@@ -830,7 +871,8 @@ export default function Home() {
                   What Our <span className="text-[#D4AF37]">Clients</span> Say
                 </h2>
                 <p className="text-gray-300 text-md sm:text-lg max-w-2xl mx-auto">
-                  Join thousands of satisfied customers who trust us with their scrap collection needs.
+                  Join thousands of satisfied customers who trust us with their
+                  scrap collection needs.
                 </p>
               </div>
 
@@ -840,39 +882,45 @@ export default function Home() {
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
-                {[...testimonials, ...testimonials].map((testimonial, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: false, margin: "-100px" }}
-                    className="flex-none w-[350px] bg-[#0f4c2f] p-6 rounded-2xl shadow-xl backdrop-blur-sm bg-opacity-80"
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <img
-                        src={testimonial.avatar}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]"
-                      />
-                      <div>
-                        <h3 className="font-semibold text-white">{testimonial.name}</h3>
-                        <p className="text-gray-400 text-sm">{testimonial.title}</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 mb-3">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-5 h-5 fill-[#D4AF37] text-[#D4AF37]"
+                {[...testimonials, ...testimonials].map(
+                  (testimonial, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                      viewport={{ once: false, margin: "-100px" }}
+                      className="flex-none w-[350px] bg-[#0f4c2f] p-6 rounded-2xl shadow-xl backdrop-blur-sm bg-opacity-80"
+                    >
+                      <div className="flex items-center gap-4 mb-4">
+                        <img
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          className="w-16 h-16 rounded-full object-cover border-2 border-[#D4AF37]"
                         />
-                      ))}
-                    </div>
-                    <p className="text-gray-300 leading-relaxed">
-                      "{testimonial.text}"
-                    </p>
-                  </motion.div>
-                ))}
+                        <div>
+                          <h3 className="font-semibold text-white">
+                            {testimonial.name}
+                          </h3>
+                          <p className="text-gray-400 text-sm">
+                            {testimonial.title}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 mb-3">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-5 h-5 fill-[#D4AF37] text-[#D4AF37]"
+                          />
+                        ))}
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">
+                        "{testimonial.text}"
+                      </p>
+                    </motion.div>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -884,14 +932,18 @@ export default function Home() {
                 <div className="space-y-8 z-10">
                   <h2 className="text-3xl sm:text-5xl font-bold text-white leading-tight">
                     Ready to Turn Your
-                    <span className="text-[#D4AF37] block">Scrap into Cash?</span>
+                    <span className="text-[#D4AF37] block">
+                      Scrap into Cash?
+                    </span>
                   </h2>
                   <p className="text-gl sm:text-xl text-gray-300">
-                    Join thousands of satisfied customers who have already discovered the easiest way to sell their scrap. Our team is ready to assist you!
+                    Join thousands of satisfied customers who have already
+                    discovered the easiest way to sell their scrap. Our team is
+                    ready to assist you!
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button
-                      onClick={() => setIsDialogOpen(true )}
+                      onClick={() => setIsDialogOpen(true)}
                       className="bg-[#D4AF37] hover:bg-[#B39030] text-white px-8 py-6 text-md sm:text-lg"
                     >
                       Get Started Now
@@ -908,8 +960,10 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="relative aspect-video rounded-2xl overflow-hidden group cursor-pointer"
-                     onClick={() => setIsVideoPlaying(true)}>
+                <div
+                  className="relative aspect-video rounded-2xl overflow-hidden group cursor-pointer"
+                  onClick={() => setIsVideoPlaying(true)}
+                >
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none">
                     <div className="w-20 h-20 rounded-full bg-[#D4AF37] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <Play className="h-10 w-10 text-white ml-1" />
@@ -925,19 +979,18 @@ export default function Home() {
             </div>
           </div>
         </div>
-      
       </div>
 
       {/* Multi-step Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[500px] h-full overflow-y-auto pb-16">
-        <DialogHeader>
+          <DialogHeader>
             <DialogTitle>Sell Your {selectedScrap?.title}</DialogTitle>
             <DialogDescription>
               Please follow the steps to complete your selling process.
             </DialogDescription>
           </DialogHeader>
-          
+
           {/* Step Indicator */}
           <div className="flex justify-between mb-8">
             {steps.map((step, index) => (
@@ -949,12 +1002,14 @@ export default function Home() {
                   currentStep === index + 1 && "text-blue-600"
                 )}
               >
-                <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center border-2",
-                  currentStep > index + 1 && "border-green-600 bg-green-50",
-                  currentStep === index + 1 && "border-blue-600 bg-blue-50",
-                  currentStep < index + 1 && "border-gray-300 bg-gray-50"
-                )}>
+                <div
+                  className={cn(
+                    "w-8 h-8 rounded-full flex items-center justify-center border-2",
+                    currentStep > index + 1 && "border-green-600 bg-green-50",
+                    currentStep === index + 1 && "border-blue-600 bg-blue-50",
+                    currentStep < index + 1 && "border-gray-300 bg-gray-50"
+                  )}
+                >
                   {index + 1}
                 </div>
                 <span className="text-xs mt-1">{step.title}</span>
@@ -972,10 +1027,8 @@ export default function Home() {
             >
               Back
             </Button>
-            <Button
-              onClick={currentStep === 4 ? handleSubmit : handleNext}
-            >
-              {currentStep === 4 ? 'Submit' : 'Next'}
+            <Button onClick={currentStep === 4 ? handleSubmit : handleNext}>
+              {currentStep === 4 ? "Submit" : "Next"}
             </Button>
           </div>
         </DialogContent>
