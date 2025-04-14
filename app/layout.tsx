@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,6 +22,22 @@ export default function RootLayout({
       <body className={inter.className}>
         <Navbar />
         <main>{children}</main>
+
+        
+        {/* WhatsApp Floating Icon */}
+        <Link
+          href="https://wa.me/923144679020?text=Hello!%20I%20want%20to%20sell%20scrap"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-4 right-4 z-50"
+        >
+          <img
+            src="/whastapp.png"
+            alt="WhatsApp Chat"
+            className="w-12 h-12 sm:w-14 sm:h-14 object-contain hover:scale-110 transition-transform duration-300"
+          />
+        </Link>
+
         <Footer />
       </body>
     </html>
