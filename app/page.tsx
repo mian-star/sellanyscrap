@@ -74,6 +74,11 @@ const scrapTypes: ScrapType[] = [
     image: "/silver.jpg",
     priceRange: "Rs400-500/kg",
   },
+  {
+    title: "Mix Scrape",
+    image: "/mixscrap.jpg",
+    priceRange: "Price will be given after visiting scrap",
+  },
 ];
 
 const steps = [
@@ -266,10 +271,13 @@ export default function Home() {
 
     try {
       // Upload to backend
-      const response = await fetch("https://sellanyscrap.vercel.app/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://sellanyscrap.vercel.app/api/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
@@ -322,11 +330,14 @@ export default function Home() {
     setFormErrors({}); // clear errors if everything is fine
 
     try {
-      const response = await fetch("https://sellanyscrap.vercel.app/api/form-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://sellanyscrap.vercel.app/api/form-data",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
@@ -532,72 +543,92 @@ export default function Home() {
             </div>
           </div>
         );
-      case 2:
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="scrapType">Scrap Type *</Label>
-              <Select
-                value={formData.scrapType}
-                onValueChange={(value) => handleInputChange("scrapType", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select scrap type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {scrapTypes.map((type) => (
-                    <SelectItem
-                      key={type.title}
-                      value={type.title.toLowerCase()}
-                    >
-                      {type.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="weight">Weight (in KG) *</Label>
-              <Input
-                id="weight"
-                type="number"
-                value={formData.weight}
-                onChange={(e) => handleInputChange("weight", e.target.value)}
-                placeholder="Enter weight in KG"
-                min="1"
-                required
-              />
-              {formErrors.weight && (
-                <p className="text-red-500 text-sm mt-1">{formErrors.weight}</p>
+        case 2:
+          return (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="scrapType">Scrap Type *</Label>
+                <Select
+                  value={formData.scrapType}
+                  onValueChange={(value) => handleInputChange("scrapType", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select scrap type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {scrapTypes.map((type) => (
+                      <SelectItem
+                        key={type.title}
+                        value={type.title.toLowerCase()}
+                      >
+                        {type.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+        
+              <div>
+                <Label htmlFor="weight">Weight (in KG) *</Label>
+                <Input
+                  id="weight"
+                  type="number"
+                  value={formData.weight}
+                  onChange={(e) => handleInputChange("weight", e.target.value)}
+                  placeholder="Enter weight in KG"
+                  min="1"
+                  required
+                />
+                {formErrors.weight && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.weight}</p>
+                )}
+              </div>
+        
+              <div>
+                <Label htmlFor="expectedPrice">
+                  Expected Price per KG (Optional)
+                </Label>
+                <Input
+                  id="expectedPrice"
+                  type="number"
+                  value={formData.expectedPrice}
+                  onChange={(e) =>
+                    handleInputChange("expectedPrice", e.target.value)
+                  }
+                  placeholder="Enter expected price"
+                  min="0"
+                />
+              </div>
+        
+              {formData.scrapType === "mix scrape" ? (
+                <p className="text-sm text-muted-foreground">
+                  {
+                    scrapTypes.find(
+                      (item) => item.title.toLowerCase() === formData.scrapType
+                    )?.priceRange
+                  }
+                </p>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="acceptMarketPrice"
+                    checked={formData.acceptMarketPrice}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("acceptMarketPrice", checked)
+                    }
+                  />
+                  <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {
+                      scrapTypes.find(
+                        (item) => item.title.toLowerCase() === formData.scrapType
+                      )?.priceRange
+                    }
+                  </p>
+                </div>
               )}
             </div>
-            <div>
-              <Label htmlFor="expectedPrice">
-                Expected Price per KG (Optional)
-              </Label>
-              <Input
-                id="expectedPrice"
-                type="number"
-                value={formData.expectedPrice}
-                onChange={(e) =>
-                  handleInputChange("expectedPrice", e.target.value)
-                }
-                placeholder="Enter expected price"
-                min="0"
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="acceptMarketPrice"
-                checked={formData.acceptMarketPrice}
-                onCheckedChange={(checked) =>
-                  handleInputChange("acceptMarketPrice", checked)
-                }
-              />
-              <Label htmlFor="acceptMarketPrice">Accept Market Price</Label>
-            </div>
-          </div>
-        );
+          ); 
       case 3:
         return (
           <div className="space-y-4">
@@ -836,7 +867,8 @@ export default function Home() {
               </h2>
               <p className="mt-3 max-w-md px-2 mx-auto text-lg text-gray-300 sm:text-xl md:mt-5 md:max-w-3xl">
                 We believe in providing immediate value for your materials. Our
-                hassle-free payment process ensures you get paid as soon as we verify your scrap.
+                hassle-free payment process ensures you get paid as soon as we
+                verify your scrap.
               </p>
             </div>
 
