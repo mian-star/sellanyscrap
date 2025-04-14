@@ -34,7 +34,7 @@ export default function RootLayout({
           <img
             src="/whastapp.png"
             alt="WhatsApp Chat"
-            className="w-12 h-12 sm:w-14 sm:h-14 object-contain hover:scale-110 transition-transform duration-300"
+            className="w-14 h-14 object-contain hover:scale-110 transition-transform duration-300"
           />
         </Link>
 
